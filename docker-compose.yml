@@ -1,0 +1,18 @@
+services:
+  api:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - EMAIL_PORT=1025
+      - EMAIL_HOST="smtp-server"
+  smtp-server:
+    image: mailhog/mailhog
+    expose:
+      - 1025
+      - 8025
+    ports:
+      - '1025:1025'
+      - '8025:8025'
