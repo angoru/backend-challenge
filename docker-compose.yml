@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     environment:
       - EMAIL_PORT=1025
-      - EMAIL_HOST="smtp-server"
+      - EMAIL_HOST=smtp-server
   smtp-server:
     image: mailhog/mailhog
     expose:

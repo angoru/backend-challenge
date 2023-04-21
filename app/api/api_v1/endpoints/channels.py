@@ -1,15 +1,10 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
-
-
-class Channel(BaseModel):
-    name: str
-    channel: str
+from app.schemas.channels import Channel
 
 
 channels = [
-    Channel(name="slack", plugin_class="SlackPlugin"),
-    Channel(name="email", plugin_class="EmailPlugin"),
+    Channel(name="Sales", plugin_class="Slack"),
+    Channel(name="Pricing", plugin_class="Email"),
 ]
 
 router = APIRouter()
