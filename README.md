@@ -27,3 +27,7 @@ Pricing  | Email
 - Be coded as you do daily (libraries, style, testing...).
 - Be easy to grow with new functionality.
 - Be a dockerized app.
+
+## Challenge solution
+
+[solution](solution.md)

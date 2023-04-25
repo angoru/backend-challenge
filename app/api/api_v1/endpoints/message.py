@@ -14,6 +14,10 @@ async def send_in_background(
     background_tasks: BackgroundTasks,
     message: Message,
 ) -> JSONResponse:
+    """
+    This is the main endpoint which takes the topic and description and send the
+    message to the corresponding channel
+    """
     load_dotenv()
 
     topic = await Topics.get(name=message.topic).prefetch_related("channel")

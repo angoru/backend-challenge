@@ -2,18 +2,15 @@ from fastapi import APIRouter
 from app.schemas.channels import Channel
 from app.models import Channels, Channel_Pydantic, ChannelIn_Pydantic
 from tortoise.contrib.fastapi import HTTPNotFoundError
+from app.models import Topics, Topic_Pydantic, Channels, Channel_Pydantic
 
-channels = [
-    Channel(name="Sales", plugin_class="Slack"),
-    Channel(name="Pricing", plugin_class="Email"),
-]
 
 router = APIRouter()
 
 
 @router.get("/")
 async def root():
-    return channels
+    return await Channel_Pydantic.from_queryset(Channels.all())
 
 
 @router.get(
@@ -22,7 +19,7 @@ async def root():
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def get_job(channel_id: int):
-    return await Channel_Pydantic.from_queryset_single(Channels.get(id=channel_id))
+    return await Channel_Pydantic.from_queryset(Channels.get(id=channel_id))
 
 
 @router.post("/", response_model=Channel_Pydantic)

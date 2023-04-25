@@ -3,18 +3,13 @@ from app.schemas.topics import Topic
 from app.models import Topics, Topic_Pydantic, TopicIn_Pydantic
 from tortoise.contrib.fastapi import HTTPNotFoundError
 
-topics = [
-    Topic(name="Sales", channel="slack"),
-    Topic(name="Pricing", channel="email"),
-]
-
 
 router = APIRouter()
 
 
 @router.get("/")
 async def root():
-    return topics
+    return await Topic_Pydantic.from_queryset(Topics.all())
 
 
 @router.get(
