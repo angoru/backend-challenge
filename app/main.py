@@ -4,16 +4,18 @@ from tortoise import Tortoise
 from app.api.api_v1.api import router as api_router
 from mangum import Mangum
 from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
+from .jwttoken import *
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World!"}
+# @app.get("/")
+# async def root():
+#     return {"message": "Hello World!"}
 
 
 app.include_router(api_router, prefix="/api/v1")
+
 handler = Mangum(app)
 
 register_tortoise(
@@ -23,3 +25,16 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
+
+
+@app.get("/")
+async def root():
+    return {"message": "Hello, World!"}
+
+
+@app.get("/protected")
+async def protected():
+    return {"message": "This is a protected route"}
+
+
+app.middleware("http")(jwt_token_verification)
