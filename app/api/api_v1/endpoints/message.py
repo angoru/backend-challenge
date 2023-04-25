@@ -4,6 +4,7 @@ from starlette.responses import JSONResponse
 from app.plugin import PluginManager
 from dotenv import load_dotenv
 from app.schemas.message import Message
+from app.models import Topics, Topic_Pydantic, Channels, Channel_Pydantic
 
 router = APIRouter()
 
@@ -15,11 +16,10 @@ async def send_in_background(
 ) -> JSONResponse:
     load_dotenv()
 
-    # TODO: get channel from message
+    topic = await Topics.get(name=message.topic).prefetch_related("channel")
 
-    # TODO: get plugin class from channel
-
-    plugin_classes = ["Email", "Slack"]
+    plugin_classes = []
+    plugin_classes.append(topic.channel.plugin_class)
 
     message_plugins = PluginManager(os.getenv("PLUGIN_DIRECTORY"))
     for plugin_class in plugin_classes:
