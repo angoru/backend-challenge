@@ -1,10 +1,11 @@
-from typing import Protocol, List
+from typing import Protocol, List, runtime_checkable
 import os
 import importlib
 import inspect
 from fastapi import BackgroundTasks
 
 
+@runtime_checkable
 class PluginInterface(Protocol):
     """
     Plugin interface created with Protocol which acts as acb but in a more diynamic way.
@@ -46,6 +47,7 @@ class PluginManager:
                     if hasattr(module, plugin_class):
                         cls = getattr(module, plugin_class)
                         plugin = cls()
+                        assert isinstance(plugin, PluginInterface)
                         self.plugins.append(plugin)
 
     def unload_plugins(self):
